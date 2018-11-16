@@ -1,52 +1,216 @@
-<!DOCTYPE html>
-<html lang="pt-br" dir="ltr">
-  <head>
-    <meta charset="utf-8">
-    <title>Exercise</title>
+<html>
+<head>
+    <title>threejs - lights</title>
 
     <style>
-			body {
-        margin: 0;
+    	body{
+    		margin: 0;
+    		overflow: hidden;
+    	}
+      .controls {
+        position: absolute;
         width: 100vw;
-        height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        padding: 10px;
+        text-align: center;
+        font-size: 18px;
+        font-weight: bold;
+        color: black;
+        background-color: white;
       }
-		</style>
-  </head>
-  <body>
+    </style>
+</head>
+<body>
 
-    <canvas id="canvas"></canvas>
+  <div class="controls">
+    w = frente | s = trás | a = esquerda | d = direita
+  </div>
+
+    <canvas id="myCanvas"></canvas>
 
     <script src="js/three.js"></script>
+    <script src="js/UnpackDepthRGBAShader.js"></script>
+    <script src="js/ShadowMapViewer.js"></script>
+
     <script>
-      var scene = new THREE.Scene();
-      var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
 
-      renderer = new THREE.WebGLRenderer({canvas: document.querySelector("#canvas")});
-      // var renderer = new THREE.WebGLRenderer();
-      renderer.setSize( window.innerWidth, window.innerHeight );
-      document.body.appendChild( renderer.domElement );
+    var renderer,
+    	scene,
+    	camera,
+    	myCanvas = document.getElementById('myCanvas');
 
-      var geometry = new THREE.BoxGeometry( 1, 1, 1 );
-      var material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
-      var cube = new THREE.Mesh( geometry, material );
-      scene.add( cube );
+    // RENDERIZAÇÃO
+    renderer = new THREE.WebGLRenderer({
+      canvas: myCanvas,
+      antialias: true
+    });
+    renderer.setClearColor(0x333333);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(window.innerWidth, window.innerHeight);
 
-      camera.position.z = 5;
+    // CENA
+    scene = new THREE.Scene();
 
-      var animate = function () {
-        requestAnimationFrame( animate );
+    // TEXTURA
+    var material = new THREE.MeshLambertMaterial();
+    var material2 = new THREE.MeshPhongMaterial();
+    var material3 = new THREE.MeshStandardMaterial();
 
-        cube.rotation.x += 0.01;
-        cube.rotation.y += 0.01;
+    // MODELOS
+    var geometry = new THREE.BoxGeometry(100, 100, 100, 10, 10, 10);
+    var geometry2 = new THREE.SphereGeometry(50, 20, 20);
+    var geometry3 = new THREE.PlaneGeometry(10000, 10000, 100, 100);
 
-        renderer.render( scene, camera );
-      };
+    var cubo = new THREE.Mesh(geometry, material);
+    cubo.position.z = -500;
+    cubo.position.x = -100;
+    cubo.position.y = -50;
+    scene.add(cubo);
 
-      animate();
+    var bola = new THREE.Mesh(geometry2, material2);
+    bola.position.z = -500;
+    bola.position.x = 100;
+    bola.position.y = -50;
+    scene.add(bola);
+
+    var chao = new THREE.Mesh(geometry3, material3);
+    chao.rotation.x = -90 * (Math.PI / 180);
+    chao.position.y = -100;
+    scene.add(chao);
+
+    // ILUMINAÇÃO
+    // Luz ambiente
+    // var light = new THREE.AmbientLight(0xffffff, 0.5);
+    // scene.add(light);
+
+    // Luz em ponto
+    var light = new THREE.PointLight(0xffffff, 2.0, 600);
+    scene.add(light);
+    // var pointLightHelper = new THREE.PointLightHelper(light);
+    // scene.add(pointLightHelper);
+
+    // Luz direcionada
+    // var light = new THREE.DirectionalLight(0xffffff, 2.0, 1000);
+    // light.target = cubo;
+    // scene.add(light);
+    // var directionalLightHelper = new THREE.DirectionalLightHelper(light, 100);
+    // scene.add(directionalLightHelper);
+
+    // Luz local
+    // var light = new THREE.SpotLight(0xffffff, 2.0, 1000);
+    // light.target = cubo;
+    // scene.add(light);
+    // var spotLightHelper = new THREE.SpotLightHelper(light);
+    // scene.add(spotLightHelper);
+
+    // Luz horizonte
+    // var light = new THREE.HemisphereLight(0xffffbb, 0x0808dd, 1);
+    // scene.add(light);
+    // var hemisphereLightHelper = new THREE.HemisphereLightHelper(light, 100);
+    // scene.add(hemisphereLightHelper);
+
+    // SOMBRA
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFShadowMap;
+
+    var light = new THREE.SpotLight(0xffffff, 4.0, 3000);
+    light.position.y = 100;
+    light.target = cubo;
+
+    light.castShadow = true;
+    light.shadow = new THREE.LightShadow(new THREE.PerspectiveCamera(100, 1, 500, 1000));
+	  light.shadow.bias = 0.0001;
+    light.shadow.mapSize.width = 2048 * 2;
+    light.shadow.mapSize.height = 2048 * 2;
+    scene.add(light);
+
+    cubo.castShadow = true;
+    bola.castShadow = true;
+    chao.receiveShadow = true;
+
+    // Mapa de modelos
+    // var shadowMapViewer = new THREE.ShadowMapViewer( light );
+    // shadowMapViewer.position.x = 10;
+    // shadowMapViewer.position.y = 10;
+    // shadowMapViewer.size.width = 2048 / 4;
+    // shadowMapViewer.size.height = 1024 / 4;
+    // shadowMapViewer.update();
+
+    // CAMERA
+    // Camera perspectiva
+    camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 300, 10000 );
+
+    // Camera ortogonal
+    // camera = new THREE.OrthographicCamera(-300, 300, 200, -200, 0.1, 10000);
+    // Helper da camera
+    // newCamera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 300, 1000 );
+    // newCamera = new THREE.OrthographicCamera(-300, 300, 200, -200, 0.1, 1000);
+    // var cameraHelper = new THREE.CameraHelper(newCamera);
+    // scene.add(cameraHelper);
+
+    // LOOP RENDENRIZAÇÃO
+    render();
+
+
+    // var delta = 0;
+    function render() {
+      // spotLightHelper.update();
+      // directionalLightHelper.update();
+
+      // delta += 0.01;
+      // camera.lookAt(light.position);
+      // camera.position.x = Math.sin(delta) * 2000;
+      // camera.position.z = Math.cos(delta) * 2000;
+
+      camera.rotation.x = -0.25;
+      camera.rotation.y = 0.55;
+      camera.rotation.z = 0.15;
+      camera.position.x = 500;
+      camera.position.y = 200;
+      camera.position.z = 150;
+
+      // CONTROLES
+      document.onkeypress = function(evt) {
+        var str = keyPressed(evt);
+        switch (str) {
+          case 's':
+            bola.position.z += 1;
+            bola.rotation.x += 0.1;
+            cubo.position.z += 1;
+            cubo.rotation.x += 0.1;
+            break;
+          case 'w':
+            bola.position.z -= 1;
+            bola.rotation.x -= 0.1;
+            cubo.position.z -= 1;
+            cubo.rotation.x -= 0.1;
+            break;
+          case 'd':
+            bola.position.x += 1;
+            bola.rotation.z -= 0.1;
+            cubo.position.x += 1;
+            cubo.rotation.z -= 0.1;
+            break;
+          case 'a':
+            bola.position.x -= 1;
+            bola.rotation.z += 0.1;
+            cubo.position.x -= 1;
+            cubo.rotation.z += 0.1;
+            break;
+        }
+      }
+
+      renderer.render(scene, camera);
+      // shadowMapViewer.render(renderer);
+      requestAnimationFrame(render);
+    }
+
+    function keyPressed(evt){
+      evt = evt || window.event;
+      var key = evt.keyCode || evt.which;
+      return String.fromCharCode(key);
+    }
+
+
     </script>
-
-  </body>
+</body>
 </html>
