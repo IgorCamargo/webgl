@@ -22,7 +22,8 @@
 <body>
 
   <div class="controls">
-    w = frente | s = trás | a = esquerda | d = direita
+    w = frente | s = trás | a = esquerda | d = direita <br>
+    Rotações: u, j | i, k | o, l | n, m
   </div>
 
     <canvas id="myCanvas"></canvas>
@@ -138,17 +139,24 @@
     // CAMERA
     // Camera perspectiva
     camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 300, 10000 );
+    // newCamera =d new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 300, 1000 );
 
     // Camera ortogonal
     // camera = new THREE.OrthographicCamera(-300, 300, 200, -200, 0.1, 10000);
     // Helper da camera
-    // newCamera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 300, 1000 );
     // newCamera = new THREE.OrthographicCamera(-300, 300, 200, -200, 0.1, 1000);
     // var cameraHelper = new THREE.CameraHelper(newCamera);
     // scene.add(cameraHelper);
 
     // LOOP RENDENRIZAÇÃO
     render();
+      camera.rotation.x = -0.25;
+      camera.rotation.y = 0.55;
+      camera.rotation.z = 0.15;
+      
+      camera.position.x = 500;
+      camera.position.y = 200;
+      camera.position.z = 150;
 
 
     // var delta = 0;
@@ -161,17 +169,37 @@
       // camera.position.x = Math.sin(delta) * 2000;
       // camera.position.z = Math.cos(delta) * 2000;
 
-      camera.rotation.x = -0.25;
-      camera.rotation.y = 0.55;
-      camera.rotation.z = 0.15;
-      camera.position.x = 500;
-      camera.position.y = 200;
-      camera.position.z = 150;
 
       // CONTROLES
       document.onkeypress = function(evt) {
         var str = keyPressed(evt);
         switch (str) {
+          case 'u':
+            camera.rotation.y += 0.05;
+            break;
+         case 'j':
+            camera.rotation.y -= 0.05;
+            break;
+          case 'i':
+            camera.rotation.z += 0.05;
+            break;
+          case 'k':
+            camera.rotation.z -= 0.05;
+            break;
+          case 'o':
+            camera.rotation.x += 0.05;
+            break;
+          case 'l':
+            camera.rotation.x -= 0.05;
+            break;
+          case 'n':
+             camera.position.z += 10;
+             camera.position.x += 10;
+             break;
+         case 'm':
+             camera.position.z -= 10;
+             camera.position.x -= 10;
+             break;
           case 's':
             bola.position.z += 1;
             bola.rotation.x += 0.1;
