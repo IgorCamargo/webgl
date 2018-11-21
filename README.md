@@ -21,7 +21,7 @@ Neste exemplo prático de WebGL, foram aplicado os seguintes conceitos vistos du
     - Diagonal
     - Ortogonal
 
-![Main](https://drive.google.com/file/d/1IQ_0CN_WuSLz6vyEUfcl-7OneIppby-u/view?usp=sharing)
+![Main](https://uploaddeimagens.com.br/images/001/738/154/full/img1.png?1542767334)
 
 Foi utilizado a blibioteca em JS [Three.js](https://threejs.org/)
 
