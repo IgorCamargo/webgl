@@ -1,6 +1,6 @@
 ## WebGL na prática - Computação Gráfica
 
-Neste exemplo prático de WebGL, foram aplicado os seguintes conceitos vistos durante a disciplina de Computação Gráfica:
+Neste exemplo prático de WebGL, foram criados dois modelos que permitem a movimentação para frente/trás e laterais, aplicando os seguintes conceitos vistos durante a disciplina de Computação Gráfica:
 
 ##### Modelos
     - Um Cubo
