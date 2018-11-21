@@ -30,8 +30,5 @@ Neste exemplo prático de WebGL, foram aplicado os seguintes conceitos vistos du
     - Diagonal
     - Ortogonal
 
-
-
-Foi utilizado a blibioteca em JS [Three.js](https://threejs.org/)
-
-Material de apoio [THREE.js Part 1 to 8](https://www.youtube.com/watch?v=ABV1mK1CGOY)
+- Foi utilizado a blibioteca em JS [Three.js](https://threejs.org/)
+- Material de apoio [THREE.js Part 1 to 8](https://www.youtube.com/watch?v=ABV1mK1CGOY)
