@@ -82,7 +82,7 @@
     // var light = new THREE.AmbientLight(0xffffff, 0.5);
     // scene.add(light);
 
-    // Luz em ponto
+    // Luz de um ponto
     var light = new THREE.PointLight(0xffffff, 2.0, 600);
     scene.add(light);
     // var pointLightHelper = new THREE.PointLightHelper(light);
@@ -102,7 +102,7 @@
     // var spotLightHelper = new THREE.SpotLightHelper(light);
     // scene.add(spotLightHelper);
 
-    // Luz horizonte
+    // Luz de hemisfério
     // var light = new THREE.HemisphereLight(0xffffbb, 0x0808dd, 1);
     // scene.add(light);
     // var hemisphereLightHelper = new THREE.HemisphereLightHelper(light, 100);
@@ -111,7 +111,7 @@
     // SOMBRA
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFShadowMap;
-
+    // definindo como holofote
     var light = new THREE.SpotLight(0xffffff, 4.0, 3000);
     light.position.y = 100;
     light.target = cubo;
