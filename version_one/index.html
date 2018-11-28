@@ -22,8 +22,9 @@
 <body>
 
   <div class="controls">
-    w = frente | s = trás | a = esquerda | d = direita <br>
-    Rotações: u, j | i, k | o, l | n, m
+    w = frente | s = trás | a = esquerda | d = direita &emsp;
+    Rotações: u, j | i, k | o, l | n, m &emsp;
+    iluminações: 1 | 2 | 3 | 4 | 5
   </div>
 
     <canvas id="myCanvas"></canvas>
@@ -153,7 +154,7 @@
       camera.rotation.x = -0.25;
       camera.rotation.y = 0.55;
       camera.rotation.z = 0.15;
-      
+
       camera.position.x = 500;
       camera.position.y = 200;
       camera.position.z = 150;
@@ -223,6 +224,38 @@
             bola.rotation.z += 0.1;
             cubo.position.x -= 1;
             cubo.rotation.z += 0.1;
+            break;
+          // iluminações
+          case '1':
+            scene.remove(light);
+            light = new THREE.PointLight(0xffffff, 2.0, 600);
+            light.position.set( -300, 50, -350 );
+            light.castShadow = true;
+            scene.add(light);
+            break;
+          case '2':
+            scene.remove(light);
+            light = new THREE.DirectionalLight(0xffffff, 2.0, 1000);
+            // light.target = cubo;
+            light.position.set( 0,1,0 );
+            light.castShadow = true;
+            scene.add(light);
+            break;
+          case '3':
+            scene.remove(light);
+            light = new THREE.SpotLight(0xffffff, 2.0, 1000);
+            // light.target = cubo;
+            light.position.set( 0,5,3 );
+            light.castShadow = true;
+            scene.add(light);
+            break;
+          case '4':
+            scene.remove(light);
+            light = new THREE.HemisphereLight(0x990000, 0x000000, 1);
+            scene.add(light);
+            break;
+          case '5':
+            scene.remove(light);
             break;
         }
       }
